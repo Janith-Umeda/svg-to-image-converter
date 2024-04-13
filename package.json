@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc && tsc --build tsconfig.es5.json"
+    "dev": "tsc --watch",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.24.4",
+    "gulp": "^5.0.0",
+    "gulp-babel": "^8.0.0",
     "typescript": "^5.4.5"
   }
 }
