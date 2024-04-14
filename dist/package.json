@@ -1,0 +1,32 @@
+{
+    "name": "svg-to-image-converter",
+    "version": "1.0.1",
+    "description": "Simple and Less Code Client Side SVG to png,jpg Image Converter ES6 Javascript Library",
+    "main": "lib/es5/index.js",
+    "module": "lib/es6/index.js",
+    "sideEffects": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Janith-Umeda/svg-to-image.git"
+    },
+    "files": [
+        "lib",
+        "package.json"
+    ],
+    "keywords": [
+        "svg",
+        "svg-to-png",
+        "svg-converter",
+        "svg-to-jpg",
+        "image converter",
+        "svg converter",
+        "svg to image"
+    ],
+    "author": "Janith-Umeda <janith.rightmo@gmail.com>",
+    "bugs": {
+        "email": "janith.rightmo@gmail.com",
+        "url": "https://github.com/Janith-Umeda/svg-to-image/issues"
+    },
+    "homepage": "",
+    "license": "MIT"
+}

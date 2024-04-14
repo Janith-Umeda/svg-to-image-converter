@@ -1,6 +1,6 @@
 type type = "png" | "jpg" | "jpeg";
 
-class SVGToImage{
+export default class SVGToImage{
     public static async toBlob(type:type,svgUrls:Array<string>,width:number = 1024,height:number = 1024) : Promise<Array<Blob>> {
         const data:Array<Blob> = [];
         function convert(){
