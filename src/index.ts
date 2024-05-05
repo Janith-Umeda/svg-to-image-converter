@@ -51,7 +51,7 @@ export default class SVGToImage{
         return data;
     }
 
-    protected static reCorrectSvg(svgPath:string) : Promise<BlobPart> {
+    private static reCorrectSvg(svgPath:string) : Promise<BlobPart> {
         return new Promise(resolve=>{
             const fr = new FileReader();
             this.fetchSvg(svgPath).then((res)=>{
@@ -125,5 +125,9 @@ export default class SVGToImage{
         return new File([u8arr], filename, {
             type: mime
         });
+    }
+
+    public static forceDownload(){
+        
     }
 }
