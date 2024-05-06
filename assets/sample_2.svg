@@ -1,0 +1,13 @@
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+    <!-- Red Rectangle -->
+    <rect x="50" y="20" width="100" height="50" fill="red"/>
+    
+    <!-- Green Circle -->
+    <circle cx="250" cy="45" r="30" fill="green"/>
+    
+    <!-- Blue Ellipse -->
+    <ellipse cx="150" cy="120" rx="80" ry="40" fill="blue"/>
+    
+    <!-- Yellow Rectangle -->
+    <rect x="200" y="100" width="150" height="70" fill="yellow"/>
+</svg>

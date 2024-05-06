@@ -1,13 +1,20 @@
 type type = "png" | "jpg" | "jpeg";
+type conformationTypes = "native" | "custom";
+
+interface DownloadOptions {
+    confirmation:boolean,
+    conformationType:conformationTypes,
+    nativeConformationText:string
+}
 
 export default class SVGToImage{
-    public static async toBlob(type:type,svgUrls:Array<string>,width:number = 1024,height:number = 1024) : Promise<Array<Blob>> {
+    public static async toBlob(type:type,svgUrls:Array<string|File>,width:number = 1024,height:number = 1024) : Promise<Array<Blob>> {
         const data:Array<Blob> = [];
         function convert(){
             return new Promise((resolve=>{
-                let i:number = 0;
-                svgUrls.forEach((link)=>{
-                    const fileName = link;
+                for (let i:number = 0; i < svgUrls.length; i++) {
+                    const link = svgUrls[i];
+                    const fileName : string = typeof link == 'string' ? link : link.name;
                     SVGToImage.reCorrectSvg(link).then((res)=>{
                         const image:HTMLImageElement = new Image();
                         image.crossOrigin = 'anonymous';
@@ -42,8 +49,7 @@ export default class SVGToImage{
                         image.style.background = "red";
                         image.src = SVGToImage.toBlobUrl([res],"svg");                  
                     })
-                    
-                })
+                }
             }));
         }
 
@@ -51,11 +57,9 @@ export default class SVGToImage{
         return data;
     }
 
-    private static reCorrectSvg(svgPath:string) : Promise<BlobPart> {
-        return new Promise(resolve=>{
-            const fr = new FileReader();
-            this.fetchSvg(svgPath).then((res)=>{
-                fr.readAsText(res);
+    private static reCorrectSvg(svgPath:string|File) : Promise<BlobPart> {
+        const setWidthHeight = (fr:FileReader,res:Blob,resolve:Function) : void =>{
+            fr.readAsText(res);
                 fr.onload = ()=>{
                     const svgRes:string = fr.result.toString();
                     const doc = new DOMParser().parseFromString(svgRes,"image/svg+xml");
@@ -69,7 +73,17 @@ export default class SVGToImage{
                         resolve(svgRes);
                     }
                 }
-            })
+        }
+
+        return new Promise(resolve=>{
+            const fr = new FileReader();
+            if(typeof svgPath === "string"){
+                this.fetchSvg(svgPath).then((res)=>{
+                    setWidthHeight(fr,res,resolve);
+                });
+            }else{
+                setWidthHeight(fr,svgPath,resolve);
+            }
         });
     }
 
@@ -127,7 +141,29 @@ export default class SVGToImage{
         });
     }
 
-    public static forceDownload(){
-        
+    public static forceDownload(file:string|any,fileName:string=new Date().getTime().toString(),options?:DownloadOptions){
+        if(file){
+            let fileUrl = '';
+            if(typeof file === "object" ){
+                fileUrl = this.toBlobUrl(file,file.type);
+            }else{
+                fileUrl = file;
+            }
+
+            const a = document.createElement('a');
+            a.hidden=true;
+            a.download = fileName;
+            a.href = fileUrl;
+            a.textContent = 'dl';
+            document.body.appendChild(a);
+            a.focus();
+            if(options?.confirmation){
+                if(options.conformationType == 'native'){
+                    if(!window.confirm(options.nativeConformationText ?? "Are you sure to Download?")) {a.remove(); return} ;
+                }
+            }
+            a.click();
+            a.remove();
+        }
     }
 }
