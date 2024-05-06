@@ -68,6 +68,39 @@ document.getElementById("svgFileInput").onchange = (evt)=>{
 }
 ```
 
+Example for multiple input files without download on Next.js
+
+```jsx
+"use client";
+import Image from "next/image";
+import { useEffect, useState } from "react"
+import SVGToImage from "svg-to-image-converter";
+
+export default function Convert(){
+    const [blobUrls,setBlobUrls] = useState([]);
+    const [files,setFiles] = useState([]);
+
+    useEffect(()=>{
+        if(files.length){
+            SVGToImage.toBlob('png',files).then((res)=>{
+                const urls = [];
+                for(let i=0;i<files.length;i++){
+                    urls.push(URL.createObjectURL(files[i]));
+                }
+                setBlobUrls(urls);
+            })
+        }
+    },[files])
+
+    return <div>
+        <input type="file" accept=".svg" multiple onChange={(evt)=>{setFiles(evt.target.files)}} />
+        {blobUrls.map((img,i)=>(
+            <Image src={img} width={512} height={512} unoptimized alt="" key={i}/>
+        ))}
+    </div>
+}
+```
+
 ## Contributing
 
 Contributions are always welcome!
